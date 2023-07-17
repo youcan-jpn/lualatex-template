@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  tex-ubuntu:
+    container_name: tex-ubuntu
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ".:/workspace"
+    tty: true

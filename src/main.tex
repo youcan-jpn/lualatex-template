@@ -1,0 +1,108 @@
+\documentclass[
+    luatex,
+    unicode,
+    titlepage,
+    pdfusetitle
+]{ltjsarticle}
+
+% 数式関連
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{physics}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs}
+
+% 図表関連
+\usepackage{here}
+
+% フォント関連
+\usepackage[no-math,haranoaji,deluxe]{luatexja-preset}
+\usepackage{unicode-math}
+
+% 引用関連
+\usepackage[hidelinks]{hyperref}
+\usepackage[backend=biber,style=ieee]{biblatex}
+\addbibresource{src/references.bib}
+
+\begin{document}
+
+\title{\LaTeX \ with docker}
+\author{Yuta Ono}
+\date{\today}
+\maketitle
+
+\section{このリポジトリについて}
+\subsection{概要}
+このリポジトリは\LaTeX を使って文章を書くためのテンプレートです．
+デフォルトの設定ではLuaLaTexを使ってPDFを作成します．
+
+\subsection{PDFを出力するまでの流れ}
+\begin{enumerate}
+	\item github上でこのテンプレートを利用して新たなリポジトリを作成する
+	\item 作成したリポジトリをcloneする
+	\item cloneしたリポジトリに移動する
+	\item \verb|src/main.tex|を編集
+	\item \verb|$ docker compose up -d --build|でコンテナを起動
+	\item \verb|$ docker exec -it tex-ubuntu bash|でコンテナ内に入る
+	\item \verb|$ latexmk src/main.tex|で\verb|out/|にPDFを出力
+	\item \verb|$ latexmk src/main.tex -c|で余計なファイルを削除
+\end{enumerate}
+
+\newpage
+
+\section{各種テンプレート}
+\subsection{数式}
+\begin{equation}
+	\sin x = \sum^{\infty}_{k=0} (-1)^k \frac{x^{2k+1}}{(2k+1)!}  \label{eq:sin}
+\end{equation}
+\begin{equation}
+	\cos x = \sum^{\infty}_{k=0} (-1)^k \frac{x^{2k}}{(2k)!}  \label{eq:cos}
+\end{equation}
+\begin{equation}
+	e^x = \sum^{\infty}_{k=0} \frac{x^k}{k!}  \label{eq:exp}
+\end{equation}
+
+式\eqref{eq:exp}は指数関数のMaclaurin展開である．
+\verb|\mathtoolsset{showonlyrefs}|を設定した場合は，参照していない数式に番号が振られない．
+
+
+\subsection{図}
+図\ref{fig:switzerland}に示したのはスイスのベルンにあるクライネシャイデック駅から見たアイガー山である．
+画像は地球の歩き方 (\url{https://www.arukikata.co.jp/web/summary/area/ch/})より引用．
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics*[width=12cm]{src/img/switzerland.jpg}
+  \caption{スイスの景色}
+  \label{fig:switzerland}
+\end{figure}
+
+
+
+\subsection{表}
+
+\begin{table}[H]
+	\caption{大さじ1杯(15cc)と小さじ1杯(5cc)に対応する各種調味料の重さ}
+	\label{tab:weight}
+	\centering
+	\begin{tabular}{lrrrr}
+		\hline
+		       & 砂糖 & はちみつ & 食塩 & 醤油 \\ \hline\hline
+		大さじ & 9g   & 21g      & 18g  & 18g  \\
+		小さじ & 3g   & 7g       & 6g   & 6g   \\ \hline
+	\end{tabular}
+\end{table}
+
+表\ref{tab:weight}に示す通り，大さじ1杯・小さじ1杯で測ることのできる重さは調味料によって異なる．
+
+
+\subsection{Bib\LaTeX を利用した引用}
+Googleにより提案された連合学習という概念は深層学習の応用の幅を広げた．
+Googleがはじめに提案したFedAvg~\cite{McMahan2017-pc}という手法は，複数のデバイス上の深層学習モデルをそれぞれのデバイスが持つデータに対して個別に訓練し，それらを中央サーバ上で同期的に統合する．
+それにより，全てのデータを中央サーバに集めて訓練したときと同等の精度を実現した．
+この手法により，これまではプライバシーの問題などにより1か所に集めることが難しかった医療画像などを用いて深層学習モデルを訓練することができると考えられている．
+
+\printbibliography[title=参考文献]
+
+
+\end{document}
